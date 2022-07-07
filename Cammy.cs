@@ -112,8 +112,33 @@ namespace Cammy
                 }
                 case "nocollide":
                 {
-                    Game.cameraNoCollideReplacer.Toggle();
-                    PrintEcho($"Camera collision is now {(Game.cameraNoCollideReplacer.IsEnabled ? "disabled" : "enabled")}!");
+                    if (regex.Groups.Count < 2 || string.IsNullOrEmpty(regex.Groups[2].Value))
+                    {
+                        Game.cameraNoCollideReplacer.Toggle();
+                        PrintEcho($"Camera collision is now {(Game.cameraNoCollideReplacer.IsEnabled ? "disabled" : "enabled")}!");
+                        return;
+                    } else {
+                        switch (regex.Groups[2].Value.ToLower())
+                        {
+                            case "on":
+                            case "true":
+                            case "enable":
+                            case "enabled":
+                                Game.cameraNoCollideReplacer.Enable();
+                                PrintEcho($"Camera collision is now enabled!");
+                                break;
+                            case "off":
+                            case "false":
+                            case "disable":
+                            case "disabled":
+                                Game.cameraNoCollideReplacer.Disable();
+                                PrintEcho($"Camera collision is now disabled!");
+                                break;
+                            default:
+                                PrintError("Invalid argument.");
+                                break;
+                        }
+                    }
                     break;
                 }
                 case "freecam":
